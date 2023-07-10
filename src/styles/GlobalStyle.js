@@ -2,15 +2,16 @@ import { styled, createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
     * {
-        font-family: 'Raleway';
+      font-family: Raleway;
         font-style: normal;
         font-weight: 400;
-        background: #8c11be;
+        box-sizing: border-box;
     }`
 
 export const Container = styled.div`
+   background: #8c11be;
    height: 100vh;
-   padding-inline: 1.5rem;
+   padding-inline: 25px;
    padding-top: 9.95rem;
 
    text-align: center;

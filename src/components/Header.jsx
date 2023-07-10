@@ -11,18 +11,23 @@ export default function Header({ username }) {
 }
 
 const Container = styled.div`
+   width: 326px;
    display: flex;
    justify-content: space-between;
-   align-items: flex-start;
+   align-items: start;
+
+   img {
+      padding-top: 3px;
+   }
 `
 
 const Greeting = styled.div`
-   width: 75%;
+   width: 250px;
    overflow: hidden;
    word-break: break-all;
-
+   line-height: normal;
    color: #fff;
    font-family: Raleway;
-   font-size: 1.625rem;
-   font-weight: 700;
+   font-size: 26px;
+   font-weight: 600;
 `
