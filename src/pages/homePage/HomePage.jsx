@@ -4,8 +4,10 @@ import Transactions from '../../components/Transactions'
 import InOutput from '../../components/InOutput'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function HomePage() {
+   const navigate = useNavigate()
    const [username, setUsername] = useState('')
    const [transactions, setTransactions] = useState([])
 
@@ -20,8 +22,10 @@ export default function HomePage() {
             })
             .then((response) => {
                setUsername(response.data.name)
-               setTransactions([...response.data.transactionsUser])
+               setTransactions([...response.data.transactionsUser].reverse())
             })
+      } else {
+         navigate('/')
       }
    }, [])
 

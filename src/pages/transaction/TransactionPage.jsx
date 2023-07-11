@@ -10,6 +10,8 @@ export default function TransactionPage() {
    const navigate = useNavigate()
 
    useEffect(() => {
+      if (localStorage.length === 0) navigate('/')
+
       let local = localStorage.getItem('token')
       local = JSON.parse(local)
       setTokenSession(local)
@@ -27,7 +29,7 @@ export default function TransactionPage() {
          .post(`${import.meta.env.VITE_API_URL}/nova-transacao/${type}`, transaction, {
             headers: { Authorization: `Bearer ${tokenSession}` }
          })
-         .then((response) => navigate('/home'))
+         .then(() => navigate('/home'))
          .catch((error) => alert(...error.response.data))
    }
 
