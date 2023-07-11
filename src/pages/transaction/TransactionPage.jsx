@@ -1,17 +1,58 @@
 import { styled } from 'styled-components'
 import { Form } from '../../styles/GlobalStyle'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function TransactionPage() {
-   const type = 'entrada'
+   const { tipo: type } = useParams()
+   const [tokenSession, setTokenSession] = useState('')
+   const navigate = useNavigate()
+
+   useEffect(() => {
+      let local = localStorage.getItem('token')
+      local = JSON.parse(local)
+      setTokenSession(local)
+   }, [])
+
+   const [transaction, setTransaction] = useState({
+      value: '',
+      description: ''
+   })
+
+   function sendTransaction() {
+      event.preventDefault()
+
+      axios
+         .post(`${import.meta.env.VITE_API_URL}/nova-transacao/${type}`, transaction, {
+            headers: { Authorization: `Bearer ${tokenSession}` }
+         })
+         .then((response) => navigate('/home'))
+         .catch((error) => alert(...error.response.data))
+   }
 
    return (
       <Container>
          <div>Nova {type}</div>
 
-         <Form>
-            <input type="text" name="valor" id="valor" placeholder="Valor" />
-            <input type="text" name="descricao" id="descricao" placeholder="Descrição" />
-            <input type="submit" value={`Salvar ${type}`} />
+         <Form onSubmit={sendTransaction}>
+            <input
+               data-test="registry-amount-input"
+               type="text"
+               placeholder="Valor"
+               value={transaction.value}
+               onChange={() => setTransaction({ ...transaction, value: event.target.value })}
+               required
+            />
+            <input
+               data-test="registry-name-input"
+               type="text"
+               placeholder="Descrição"
+               value={transaction.description}
+               onChange={() => setTransaction({ ...transaction, description: event.target.value })}
+               required
+            />
+            <input data-test="registry-save" type="submit" value={`Salvar ${type}`} />
          </Form>
       </Container>
    )

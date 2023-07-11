@@ -1,11 +1,24 @@
 import { styled } from 'styled-components'
 
-export default function Transactions() {
-   const arr = []
+export default function Transactions({ data }) {
+   const inputs = data.filter((transaction) => transaction.transactionType === 'entrada')
+   const outputs = data.filter((transaction) => transaction.transactionType === 'saida')
+
+   const inputValues = inputs
+      .map((input) => Number(input.value))
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+      .toFixed(2)
+
+   const outputValues = outputs
+      .map((output) => Number(output.value))
+      .reduce((acc, curr) => acc + curr, 0)
+      .toFixed(2)
+
+   const sum = (inputValues - outputValues).toFixed(2)
 
    return (
       <Container>
-         {arr.length == 0 ? (
+         {data.length == 0 ? (
             <div id="no-content">
                <h2>
                   Não há registros de <br /> entrada ou saída
@@ -14,26 +27,32 @@ export default function Transactions() {
          ) : (
             <>
                <ul>
-                  {arr.map((transaction) => {
+                  {data.map((transaction) => {
                      return (
-                        <Transaction>
-                           <p id="descricao">
-                              <span id="data">{transaction.data}</span> {transaction.descricao}
+                        <Transaction key={transaction._id} type={transaction.transactionType}>
+                           <p id="descricao" data-test="registry-name">
+                              <span id="data">{transaction.date}</span> {transaction.description}
                            </p>
-                           <span id="valor">{transaction.valor}</span>
+                           <span id="valor" data-test="registry-amount">{transaction.value.replace('.', ',')}</span>
                         </Transaction>
                      )
                   })}
                </ul>
                <div>
                   <p>SALDO</p>
-                  <span>2934.12</span>
+                  <Saldo data-test="total-amount" value={sum}>{sum.replace('.', ',')}</Saldo>
                </div>
             </>
          )}
       </Container>
    )
 }
+
+const Saldo = styled.span`
+   color: ${({value}) => ((value == 0) ? '#000' : (value > 0) ? '#03AC00' : '#C70000')};
+   text-align: right;
+   font-weight: 600;
+`
 
 const Container = styled.div`
    background: #8c11be;
@@ -57,17 +76,13 @@ const Container = styled.div`
    div {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding-inline: 0.75rem;
       padding-block: 0.5rem;
       font-size: 1.0625rem;
       p {
          color: #000;
          font-weight: 700;
-      }
-
-      span {
-         color: #03ac00;
-         text-align: right;
       }
    }
 
@@ -78,11 +93,11 @@ const Container = styled.div`
    }
 
    ul {
-      //pra baixo
       display: flex;
       flex-direction: column;
-      
+
       overflow-y: scroll;
+      padding-bottom: 16px;
    }
 
    #no-content {
@@ -108,8 +123,8 @@ const Transaction = styled.li`
    }
 
    #valor {
-      color: #c70000;
-      text-align: right;
-      font-family: Raleway;
+      color: ${({ type }) => {
+         return type === 'entrada' ? '#03AC00' : '#C70000'
+      }};
    }
 `

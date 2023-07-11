@@ -1,11 +1,14 @@
 import { styled } from 'styled-components'
 import iconAdd from './../assets/iconAdd.svg'
 import iconRemove from './../assets/iconRemove.svg'
+import { useNavigate } from 'react-router-dom'
 
 export default function InOutput({ type }) {
+   const navigate = useNavigate()
+
    return (
-      <Container>
-         <img src={iconAdd} alt="" />
+      <Container data-test={type === 'entrada' ? 'new-income' : 'new-expense'} onClick={() => navigate(`/nova-transacao/${type}`)}>
+         <img src={type === 'entrada' ? iconAdd : iconRemove} alt="" />
          <p>
             Nova <br /> {type}
          </p>

@@ -59,7 +59,7 @@ export const Form = styled.form`
    }
 `
 
-export const Link = styled.a`
+export const Link = styled.div`
    color: #fff;
    font-family: Raleway;
    font-size: 0.9375rem;
