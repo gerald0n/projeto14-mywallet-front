@@ -16,7 +16,8 @@ export default function InOutput({ type }) {
    )
 }
 
-const Container = styled.div`
+const Container = styled.button`
+   border: none;
    width: 155px;
    height: 114px;
    border-radius: 5px;

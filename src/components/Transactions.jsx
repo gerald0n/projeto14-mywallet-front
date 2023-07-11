@@ -30,17 +30,24 @@ export default function Transactions({ data }) {
                   {data.map((transaction) => {
                      return (
                         <Transaction key={transaction._id} type={transaction.transactionType}>
-                           <p id="descricao" data-test="registry-name">
-                              <span id="data">{transaction.date}</span> {transaction.description}
-                           </p>
-                           <span id="valor" data-test="registry-amount">{transaction.value.replace('.', ',')}</span>
+                           <span style={{display: 'flex'}}>
+                              <span id="data">{transaction.date}</span>
+                              <p id="descricao" data-test="registry-name">
+                                 {transaction.description}
+                              </p>
+                           </span>
+                           <span id="valor" data-test="registry-amount">
+                              {transaction.value.replace('.', ',')}
+                           </span>
                         </Transaction>
                      )
                   })}
                </ul>
                <div>
                   <p>SALDO</p>
-                  <Saldo data-test="total-amount" value={sum}>{sum.replace('.', ',')}</Saldo>
+                  <Saldo data-test="total-amount" value={sum}>
+                     {sum.replace('.', ',')}
+                  </Saldo>
                </div>
             </>
          )}
@@ -49,7 +56,7 @@ export default function Transactions({ data }) {
 }
 
 const Saldo = styled.span`
-   color: ${({value}) => ((value == 0) ? '#000' : (value > 0) ? '#03AC00' : '#C70000')};
+   color: ${({ value }) => (value == 0 ? '#000' : value > 0 ? '#03AC00' : '#C70000')};
    text-align: right;
    font-weight: 600;
 `
